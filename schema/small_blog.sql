@@ -31,23 +31,14 @@ CREATE TABLE `posts` (
   `date_published` varchar(14) DEFAULT NULL,
   `author` varchar(254) DEFAULT NULL,
   `tags` varchar(254) DEFAULT NULL,
-  `impressions` int(11) DEFAULT NULL,
+  `impressions` int(11) DEFAULT '0',
   `date_updated` varchar(14) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `posts_ix1` (`url`),
   KEY `posts_ix2` (`post_title`),
   KEY `posts_ix3` (`date_published`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `posts`
---
-
-LOCK TABLES `posts` WRITE;
-/*!40000 ALTER TABLE `posts` DISABLE KEYS */;
-/*!40000 ALTER TABLE `posts` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `tags`
@@ -64,15 +55,6 @@ CREATE TABLE `tags` (
   KEY `tags_ix1` (`tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tags`
---
-
-LOCK TABLES `tags` WRITE;
-/*!40000 ALTER TABLE `tags` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tags` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -83,4 +65,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-02-09 13:25:07
+-- Dump completed on 2013-02-18 14:08:11
