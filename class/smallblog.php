@@ -2,10 +2,10 @@
 /**
  * smallblog php class, handling blogging operations.
  *
- * @author 	Christos Pontikis http://pontikis.net
- * @copyright	Christos Pontikis
+ * @author     Christos Pontikis http://pontikis.net
+ * @copyright    Christos Pontikis
  * @license https://raw.github.com/pontikis/small_blog/master/MIT_LICENSE MIT
- * @version	0.1.0 (10 Feb 2013)
+ * @version    0.1.0 (10 Feb 2013)
  * @link https://github.com/pontikis/small_blog
  *
  **/
@@ -184,8 +184,71 @@ class smallblog {
 		return $post;
 	}
 
+	/**
+	 * Increase Post Impressions
+	 *
+	 * @param $id
+	 * @return bool
+	 */
+	public function increasePostImpressions($id) {
+		$res = false;
+		$conn = $this->conn;
 
+		$rdbms = $this->db_settings['rdbms'];
+		$use_prepared_statements = $this->db_settings['use_prepared_statements'];
 
+		if($rdbms == "ADODB") {
+			if($use_prepared_statements) {
+
+				$sql = 'UPDATE posts SET impressions=impressions+1 WHERE id=?';
+				$a_bind_params = array($id);
+
+				$stmt = $conn->Execute($sql, $a_bind_params);
+				if($stmt === false) {
+					$this->last_error = 'Wrong SQL: ' . $sql . ' Error: ' . $conn->ErrorMsg();
+				} else {
+					$res = true;
+				}
+			} else {
+
+				$sql = 'UPDATE posts SET impressions=impressions+1 WHERE id=' . $id;
+
+				$rs = $conn->GetRow($sql);
+				if($rs === false) {
+					$this->last_error = 'Wrong SQL: ' . $sql . ' Error: ' . $conn->ErrorMsg();
+				} else {
+					$res = true;
+				}
+			}
+		} else if($rdbms == "POSTGRES") {
+			if($use_prepared_statements) {
+
+				$sql = 'UPDATE posts SET impressions=impressions+1 WHERE id=$1';
+				$a_bind_params = array($id);
+
+				$rs = pg_query_params($conn, $sql, $a_bind_params);
+				if($rs === false) {
+					$this->last_error = 'Wrong SQL: ' . $sql . ' Error: ' . pg_last_error();
+				} else {
+					$res = true;
+				}
+			} else {
+
+				$sql = 'UPDATE posts SET impressions=impressions+1 WHERE id=' . $id;
+
+				$rs = pg_query($conn, $sql);
+				if($rs === false) {
+					$this->last_error = 'Wrong SQL: ' . $sql . ' Error: ' . pg_last_error();
+				} else {
+					$res = true;
+				}
+			}
+		} else {
+
+		}
+
+		return $res;
+	}
 
 
 	/**
