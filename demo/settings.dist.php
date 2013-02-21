@@ -12,6 +12,7 @@ define('CONST_SERVER_DATEFORMAT', 'YmdHis');
 // COPY THIS FILE AS settings.php AND CONFIGURE THE FOLLOWING PARAMETER VALUES
 
 $project_url = '/small_blog/demo';
+$project_full_url = 'http://' . $_SERVER['HTTP_HOST'] . '/small_blog/demo';
 $project_path = '/var/www/small_blog/demo';
 $html_path = '/html';
 $html_ext = '.php';

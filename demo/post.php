@@ -4,6 +4,8 @@ require_once 'lib/php_adodb_v5.18/adodb.inc.php';
 require_once 'lib/utlis.php';
 require_once '../class/smallblog.php';
 
+$include = true;
+
 $sblog = new smallblog();
 $res = $sblog->db_connect($dbcon_settings);
 if($res === false) {
@@ -11,52 +13,49 @@ if($res === false) {
 	exit;
 } else {
 
-	echo parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) . '<br>';
+    // retrieve url
+	$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+	$duri = urldecode($uri);
+	$purl_len = mb_strlen(urldecode($project_url));
+	$url = mb_substr($duri, $purl_len);
 
-	// retrieve url
-
-	$durl = urldecode($_SERVER['REQUEST_URI']);
-	$purl_len = mb_strlen($project_url);
-	$qs_pos = mb_strpos($durl, '?');
-	if($qs_pos === false) {
-		$url = mb_substr($durl, $purl_len);
+	// get post
+	$post = $sblog->getPostByURL($url);
+	if($post === false) {
+		echo 'Error retreiving post with url: ' . $url;
+		exit;
 	} else {
-		$url_len = $qs_pos - $purl_len;
-		$url = mb_substr($durl, $purl_len, $url_len);
+		if(count($post) == 1) {
+			$post_id = $post[0]['id'];
+			$dp = $post[0]['date_published'];
+			$title = $post[0]['post_title'];
+			$impressions = $post[0]['impressions'];
+		} else {
+			echo 'Cannot retrieve post with url: ' . $url;
+			exit;
+		}
 	}
 
-	echo $durl . '<br>';
-	echo $qs_pos . '<br>';
-	echo $purl_len . '<br>';
-	echo $_SERVER['QUERY_STRING'] . '<br>';
-	echo $url . '<br>';
-
-
-	$post = $sblog->getPostByURL($url);
 
 }
-
 ?>
-
 
 <div id="post" style="width: 60%; margin: auto">
 
-
 	<?php
-	//echo $project_path . $html_path . $url . $html_ext;
-	if($post[0]['date_published'] != '') {
 
+	if($dp != '' && $dp <= now('UTC')) {
 
-		print '<h1>' . $post[0]['post_title'] . '</h1>';
-		include_once $project_path . $html_path . $url . $html_ext;
+		$post_content_path = $project_path . $html_path . '/' . substr($dp, 0, 4) . '/' . substr($dp, 4, 2)  . $url . '/post/content' . $html_ext;
+		print '<h1>' . $title . '</h1>';
+		print '<h3>Viewed ' . $impressions . ' times</h3>';
+		include_once $post_content_path;
 
-		//$res = $sblog->increasePostInmpressions($post_id);
+		$res = $sblog->increasePostImpressions($post_id);
 
 	} else {
 		print 'Post is not published...';
 	}
-
-
 	?>
 
 </div>
