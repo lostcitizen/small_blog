@@ -1,7 +1,7 @@
 <?php
 require_once 'settings.php';
 require_once 'lib/php_adodb_v5.18/adodb.inc.php';
-require_once 'lib/utlis.php';
+require_once 'lib/utils.php';
 require_once '../class/smallblog.php';
 
 $include = true;
@@ -41,6 +41,8 @@ if($res === false) {
 ?>
 
 <div id="post" style="width: 60%; margin: auto">
+
+	<h1><a href="index.php">&laquo; back to Blog home</a></h1>
 
 	<?php
 

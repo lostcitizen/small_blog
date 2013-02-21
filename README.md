@@ -23,11 +23,11 @@ Features:
 --------
 * Nice URLs
 * Only one table (posts) is used (post_title, post_sub_title, tags, date_published, impressions)
-* $smallblog->getPosts($start, $posts): returns selected range posts data
-* $smallblog->getPostByURL($url): returns post data from URL
+* $smallblog->getPosts($offset, $posts_per_page, $date_start, $date_end): returns selected range posts meta-data
+* $smallblog->getPostByURL($url): returns post meta-data from URL
 * $smallblog->increasePostImpressions($post_id): increase post impressions
-* $smallblog->getPostsByTAG($tag): returns posts URLs and dates to create a tag page
-* $smallblog->getBlogArchive(): returns posts URLs and dates to create an archive page
+* $smallblog->getPostsByTAG($tag, $date_start, $date_end): returns posts meta-data to create a tag page
+* $smallblog->getBlogArchive($date_start, $date_end): returns posts meta-data to create an archive page
 
 
 Download
