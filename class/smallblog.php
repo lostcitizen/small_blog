@@ -217,7 +217,7 @@ class smallblog {
 
 
 	/**
-	 * Get post meta-data using post url
+	 * Get post meta-data from post url
 	 *
 	 * @param $url
 	 * @return array|bool post data or false
