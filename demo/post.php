@@ -35,8 +35,6 @@ if($res === false) {
 			exit;
 		}
 	}
-
-
 }
 ?>
 
