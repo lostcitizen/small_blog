@@ -6,6 +6,16 @@ Minimalistic PHP blogging engine, using a single php class (smallblog). Useful t
 ![small_blog][image]
 [image]: https://raw.github.com/pontikis/small_blog/dev/small_blog.png
 
+Project page: [https://pontikis.net/labs/small_blog][HOME]
+[HOME]: http://pontikis.net/labs/small_blog
+
+Copyright Christos Pontikis [http://pontikis.net][copyright]
+[copyright]: http://pontikis.net
+
+License [MIT][mit]
+[mit]: https://raw.github.com/pontikis/small_blog/master/MIT_LICENSE
+
+
 Requires:
 --------
 * php 5+
