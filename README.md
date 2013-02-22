@@ -4,7 +4,7 @@ small_blog
 Minimalistic PHP blogging engine, using a single php class (smallblog). Useful to include a blog inside existing website. Requires administrator capabilities.
 
 ![small_blog][image]
-[image]: https://raw.github.com/pontikis/small_blog/dev/small_blog.png
+[image]: https://raw.github.com/pontikis/small_blog/master/small_blog.png
 
 Project page: [https://pontikis.net/labs/small_blog][HOME]
 [HOME]: http://pontikis.net/labs/small_blog
@@ -13,7 +13,7 @@ Copyright Christos Pontikis [http://pontikis.net][copyright]
 [copyright]: http://pontikis.net
 
 License [MIT][mit]
-[mit]: https://raw.github.com/pontikis/small_blog/dev/MIT_LICENSE
+[mit]: https://raw.github.com/pontikis/small_blog/master/MIT_LICENSE
 
 
 Requires:
@@ -31,7 +31,7 @@ Conventions:
 * Dates are stored in database as UTC timestamp YYYYMMDDHHMMSS (in varchar(14) field)
 
 ![small_blog_db][db]
-[db]: https://raw.github.com/pontikis/small_blog/dev/small_blog_db.png
+[db]: https://raw.github.com/pontikis/small_blog/master/small_blog_db.png
 
 Features:
 --------
