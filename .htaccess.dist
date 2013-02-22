@@ -8,22 +8,12 @@ Options +FollowSymLinks -Indexes
 
 RewriteEngine On
 
-# OPTIONAL: a domain is used, e.g. http://www.domain.tld/request
-#RewriteBase /
-
-# OPTIONAL: server name or IP is used, e.g. http://servername/url/to/tolc/request
-#RewriteBase /url/to/tolc
-
-# non existed URLs (files or directories): rewrite to 'app/index.php'
+# non existed URLs (files or directories): rewrite to 'post.php'
 # first line excludes common files. Could be written as RewriteCond %{REQUEST_URI} !\.(.*)$  [NC]
 # L means stop processing more rules
 RewriteCond %{REQUEST_URI} !\.(htm|html|php|js|css|ico|txt|xml|png|jpg|jpeg|gif|swf|flv|mp3|mp4|ogg|zip|7z|tar|gz|pdf|doc|docx|odt|xls|xlsx|ods|ppt|pptx|odp)$  [NC]
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ app/index.php [L]
-
-# existed URLs (files or directories) will be called normally
-# root: rewrite to 'app/index.php'
-RewriteRule ^(/)?$ app/index.php [L]
+RewriteRule ^(.*)$ post.php [L]
 
 </IfModule>
