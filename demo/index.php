@@ -5,6 +5,7 @@ require_once 'lib/utils.php';
 require_once '../class/smallblog.php';
 
 $include = true;
+$posts_count = 0;
 
 $sblog = new smallblog();
 $res = $sblog->db_connect($dbcon_settings);
@@ -13,8 +14,18 @@ if($res === false) {
 	exit;
 } else {
 
-	// get posts
-	$posts = $sblog->getPosts(0, 10, now('UTC'));
+	// count all posts
+	$posts = $sblog->getPosts(0, 0, '', '', '', now('UTC'), '', true);
+	if($post === false) {
+		echo 'Error counting posts...';
+		exit;
+	} else {
+		$posts_count = $posts[0]['total_posts'];
+	}
+
+
+	// get posts for blog home
+	$posts = $sblog->getPosts(0, 10, '', '', '', now('UTC'));
 	if($post === false) {
 		echo 'Error retreiving posts...';
 		exit;
@@ -30,7 +41,7 @@ if($res === false) {
 
 <div id="post" style="width: 60%; margin: auto">
 
-    <h1>Blog home</h1>
+    <h1>Blog home (total posts: <?php print $posts_count ?>)</h1>
 		<?php
 		foreach($posts as $post) {
 			$dp = $post['date_published'];

@@ -122,23 +122,68 @@ class smallblog {
 	 *
 	 * @param $offset
 	 * @param $posts_per_page
+	 * @param $tag
+	 * @param $tag_delim
+	 * @param $ctg_id
 	 * @param $date_until
 	 * @param $date_from
-	 * @return array|bool posts data or false
+	 * @param $count
+	 * @return array|bool posts meta-data or false
 	 */
-	public function getPosts($offset, $posts_per_page, $date_until, $date_from = '') {
+	public function getPosts($offset, $posts_per_page, $tag, $tag_delim, $ctg_id, $date_until, $date_from = '', $count = false) {
 		$posts = false;
 		$conn = $this->conn;
+
+		$select = ($count ? ' count(id) as total_posts ' : ' * ');
 
 		$rdbms = $this->db_settings['rdbms'];
 		$use_prepared_statements = $this->db_settings['use_prepared_statements'];
 
 		if($rdbms == "ADODB") {
-			if($use_prepared_statements) { // SelectLimit cannot be used with PREPARED STATEMENTS in ADODB
-				$sql = 'SELECT * FROM posts WHERE date_published is not null AND date_published <= ?';
+
+			if($use_prepared_statements) {
+				$sql = 'SELECT' . $select . 'FROM posts WHERE date_published is not null AND date_published <= ?';
 				if($date_from != '') {
 					$sql .= ' AND date_published >= ?';
 				}
+				if($tag != '') {
+					$sql .= ' AND tag LIKE ?';
+				}
+				if($ctg_id > 0) {
+					$sql .= ' AND ctg_id = ?';
+				}
+
+				$a_bind_params = array($date_until);
+				if($date_from != '') {
+					array_push($a_bind_params, $date_from);
+				}
+				if($tag != '') {
+					array_push($a_bind_params, '%' . $tag_delim . $tag . $tag_delim . '%');
+				}
+				if($ctg_id > 0) {
+					array_push($a_bind_params, $ctg_id);
+				}
+
+			} else {
+
+				$sql = 'SELECT' . $select . 'FROM posts WHERE date_published is not null AND date_published <= ' . $conn->qstr($date_until);
+				if($date_from != '') {
+					$sql .= ' AND date_published >= ' . $conn->qstr($date_from);
+				}
+				if($tag != '') {
+					$sql .= ' AND tag LIKE ' . $conn->qstr('%' . $tag_delim . $tag . $tag_delim . '%');
+				}
+				if($ctg_id > 0) {
+					$sql .= ' AND ctg_id = ' . $ctg_id;
+				}
+
+			}
+
+			if(!$count) {
+				$sql .= ' ORDER BY date_published DESC';
+			}
+
+			if($posts_per_page > 0) {
 				switch($this->db_settings['php_adodb_driver']) {
 					/**  \todo implement misc ADODB drivers */
 					case "mysql":
@@ -150,65 +195,78 @@ class smallblog {
 					case "postgres":
 						$sql .= ' LIMIT ' . $posts_per_page . ' OFFSET ' . $offset;
 				}
-
-				$a_bind_params = array($date_until);
-				if($date_from != '') {
-					$a_bind_params = array($date_until, $date_from);
-				}
-				$smtp = $conn->Execute($sql, $a_bind_params);
-
-				if($smtp === false) {
-					$this->last_error = 'Wrong SQL: ' . $sql . ' Error: ' . $conn->ErrorMsg();
-					$posts = false;
-				} else {
-					$posts = $smtp->GetRows();
-				}
-			} else {
-				$sql = 'SELECT * FROM posts WHERE date_published is not null AND date_published <= ' . $conn->qstr($date_until);
-				if($date_from != '') {
-					$sql .= ' AND date_published >= ' . $conn->qstr($date_from);
-				}
-				$rs = $conn->SelectLimit($sql, $posts_per_page, $offset);
-				if($rs === false) {
-					$this->last_error = 'Wrong SQL: ' . $sql . ' Error: ' . $conn->ErrorMsg();
-					$posts = false;
-				} else {
-					$posts = $rs->GetRows();
-				}
 			}
+
+			if($use_prepared_statements) {
+				$rs = $conn->Execute($sql, $a_bind_params);
+			} else {
+				$rs = $conn->Execute($sql);
+			}
+
+			if($rs === false) {
+				$this->last_error = 'Wrong SQL: ' . $sql . ' Error: ' . $conn->ErrorMsg();
+				$posts = false;
+			} else {
+				$posts = $rs->GetRows();
+			}
+
 		} else if($rdbms == "POSTGRES") {
 
 			if($use_prepared_statements) {
-				$sql = 'SELECT * FROM posts WHERE date_published is not null AND date_published <= $1';
+				$sql = 'SELECT' . $select . 'FROM posts WHERE date_published is not null AND date_published <= $1';
 				if($date_from != '') {
 					$sql .= ' AND date_published >= $2';
 				}
-				$sql .= ' LIMIT ' . $posts_per_page . ' OFFSET ' . $offset;
-				$a_bind_params = array($date_until);
-				if($date_from != '') {
-					$a_bind_params = array($date_until, $date_from);
+				if($tag != '') {
+					$sql .= ' AND tag LIKE $3';
+				}
+				if($ctg_id > 0) {
+					$sql .= ' AND ctg_id = $4';
 				}
 
-				$rs = pg_query_params($conn, $sql, $a_bind_params);
-				if($rs === false) {
-					$this->last_error = 'Wrong SQL: ' . $sql . ' Error: ' . pg_last_error();
-					$posts = false;
-				} else {
-					$posts = pg_fetch_all($rs);
-				}
-			} else {
-				$sql = 'SELECT * FROM posts WHERE date_published is not null AND date_published <= ' . pg_escape_literal($conn, $date_until);
+				$a_bind_params = array($date_until);
 				if($date_from != '') {
-					$sql .= ' AND date_published >= ' . pg_escape_literal($conn, $date_until);
+					array_push($a_bind_params, $date_from);
 				}
+				if($tag != '') {
+					array_push($a_bind_params, '%' . $tag_delim . $tag . $tag_delim . '%');
+				}
+				if($ctg_id > 0) {
+					array_push($a_bind_params, $ctg_id);
+				}
+
+
+			} else {
+				$sql = 'SELECT' . $select . 'FROM posts WHERE date_published is not null AND date_published <= ' . pg_escape_literal($conn, $date_until);
+				if($date_from != '') {
+					$sql .= ' AND date_published >= ' . pg_escape_literal($conn, $date_from);
+				}
+				if($tag != '') {
+					$sql .= ' AND tag LIKE ' . pg_escape_literal($conn, '%' . $tag_delim . $tag . $tag_delim . '%');
+				}
+				if($ctg_id > 0) {
+					$sql .= ' AND ctg_id = ' . $ctg_id;
+				}
+			}
+
+			if(!$count) {
+				$sql .= ' ORDER BY date_published DESC';
+			}
+			if($posts_per_page > 0) {
 				$sql .= ' LIMIT ' . $posts_per_page . ' OFFSET ' . $offset;
+			}
+
+			if($use_prepared_statements) {
+				$rs = pg_query_params($conn, $sql, $a_bind_params);
+			} else {
 				$rs = pg_query($conn, $sql);
-				if($rs === false) {
-					$this->last_error = 'Wrong SQL: ' . $sql . ' Error: ' . pg_last_error();
-					$posts = false;
-				} else {
-					$posts = pg_fetch_all($rs);
-				}
+			}
+
+			if($rs === false) {
+				$this->last_error = 'Wrong SQL: ' . $sql . ' Error: ' . pg_last_error();
+				$posts = false;
+			} else {
+				$posts = pg_fetch_all($rs);
 			}
 		}
 
