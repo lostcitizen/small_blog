@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+
+# Options -Indexes is useful to avoid directory listing
+Options +FollowSymLinks -Indexes
+
+RewriteEngine On
+
+# non existed URLs (files or directories): rewrite to 'post.php'
+# first line excludes common files. Could be written as RewriteCond %{REQUEST_URI} !\.(.*)$  [NC]
+# L means stop processing more rules
+RewriteCond %{REQUEST_URI} !\.(htm|html|php|js|css|ico|txt|xml|png|jpg|jpeg|gif|swf|flv|mp3|mp4|ogg|zip|7z|tar|gz|pdf|doc|docx|odt|xls|xlsx|ods|ppt|pptx|odp)$  [NC]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ post.php [L]
+
+</IfModule>
