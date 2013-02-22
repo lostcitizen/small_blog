@@ -13,7 +13,7 @@ Copyright Christos Pontikis [http://pontikis.net][copyright]
 [copyright]: http://pontikis.net
 
 License [MIT][mit]
-[mit]: https://raw.github.com/pontikis/small_blog/master/MIT_LICENSE
+[mit]: https://raw.github.com/pontikis/small_blog/dev/MIT_LICENSE
 
 
 Requires:
