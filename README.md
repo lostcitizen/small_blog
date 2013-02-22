@@ -20,6 +20,9 @@ Conventions:
 * Tags stored in database as: |tag1|tag2|tag3| (delimeter may be another character than |)
 * Dates are stored in database as UTC timestamp YYYYMMDDHHMMSS (in varchar(14) field)
 
+![small_blog_db][db]
+[db]: https://raw.github.com/pontikis/small_blog/dev/small_blog_db.png
+
 Features:
 --------
 * Nice URLs
@@ -27,11 +30,8 @@ Features:
 * $smallblog->getPostByURL($url): returns post meta-data from URL
 * $smallblog->increasePostImpressions($post_id): increase post impressions
 
-
 Download
 -------
-Download [here][DOWNLOAD]
+Current release 0.7.0 Download [here][DOWNLOAD]
 [DOWNLOAD]: https://github.com/pontikis/small_blog/archive/master.zip
 
-![small_blog_db][db]
-[db]: https://raw.github.com/pontikis/small_blog/dev/small_blog_db.png
