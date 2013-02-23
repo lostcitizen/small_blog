@@ -147,7 +147,7 @@ class smallblog {
 					$sql .= ' AND date_published >= ?';
 				}
 				if($tag != '') {
-					$sql .= ' AND tag LIKE ?';
+					$sql .= ' AND tags LIKE ?';
 				}
 				if($ctg_id > 0) {
 					$sql .= ' AND ctg_id = ?';
@@ -171,7 +171,7 @@ class smallblog {
 					$sql .= ' AND date_published >= ' . $conn->qstr($date_from);
 				}
 				if($tag != '') {
-					$sql .= ' AND tag LIKE ' . $conn->qstr('%' . $tag_delim . $tag . $tag_delim . '%');
+					$sql .= ' AND tags LIKE ' . $conn->qstr('%' . $tag_delim . $tag . $tag_delim . '%');
 				}
 				if($ctg_id > 0) {
 					$sql .= ' AND ctg_id = ' . $ctg_id;
@@ -218,7 +218,7 @@ class smallblog {
 					$sql .= ' AND date_published >= $2';
 				}
 				if($tag != '') {
-					$sql .= ' AND tag LIKE $3';
+					$sql .= ' AND tags LIKE $3';
 				}
 				if($ctg_id > 0) {
 					$sql .= ' AND ctg_id = $4';
@@ -242,7 +242,7 @@ class smallblog {
 					$sql .= ' AND date_published >= ' . pg_escape_literal($conn, $date_from);
 				}
 				if($tag != '') {
-					$sql .= ' AND tag LIKE ' . pg_escape_literal($conn, '%' . $tag_delim . $tag . $tag_delim . '%');
+					$sql .= ' AND tags LIKE ' . pg_escape_literal($conn, '%' . $tag_delim . $tag . $tag_delim . '%');
 				}
 				if($ctg_id > 0) {
 					$sql .= ' AND ctg_id = ' . $ctg_id;
