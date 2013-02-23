@@ -13,6 +13,10 @@ License [MIT][mit]
 [mit]: https://raw.github.com/pontikis/small_blog/master/MIT_LICENSE
 
 
+Release 0.7.1 (23 Feb 2013)
+---------------------------
+* bug fix: where sql typo using tag
+
 Release 0.7.0 (22 Feb 2013)
 ---------------------------
 * Basic functionality

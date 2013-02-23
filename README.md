@@ -42,6 +42,6 @@ Features:
 
 Download
 -------
-Current release 0.7.0 Download [here][DOWNLOAD]
+Current release 0.7.1 Download [here][DOWNLOAD]
 [DOWNLOAD]: https://github.com/pontikis/small_blog/archive/master.zip
 
