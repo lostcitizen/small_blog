@@ -52,11 +52,13 @@ CREATE TABLE `posts` (
   `post_sub_title` varchar(254) DEFAULT NULL,
   `date_inserted` varchar(14) NOT NULL,
   `date_published` varchar(14) DEFAULT NULL,
+  `date_updated` varchar(14) DEFAULT NULL,
   `author` varchar(254) DEFAULT NULL,
   `tags` varchar(254) DEFAULT NULL,
-  `impressions` int(11) DEFAULT '0',
-  `date_updated` varchar(14) DEFAULT NULL,
   `categories_id` int(11) DEFAULT NULL,
+  `description` varchar(160) DEFAULT NULL,
+  `impressions` int(11) DEFAULT '0',
+  `notes` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `posts_ix1` (`url`),
   KEY `posts_ix2` (`post_title`),
@@ -70,7 +72,7 @@ CREATE TABLE `posts` (
 
 LOCK TABLES `posts` WRITE;
 /*!40000 ALTER TABLE `posts` DISABLE KEYS */;
-INSERT INTO `posts` VALUES (1,'/test-url1','post1 title','post1 sub_title','20130201000000','20120110000000',NULL,'tag1, tag2, tag3',43,NULL,NULL),(2,'/test-url2','post2 title',NULL,'20130201000000','20130115000000',NULL,NULL,20,NULL,NULL),(3,'/test-url3','post3 title',NULL,'20130201000000','20130220000000',NULL,NULL,17,NULL,NULL);
+INSERT INTO `posts` VALUES (1,'/test-url1','post1 title','post1 sub_title','20130201000000','20120110000000',NULL,NULL,'tag1, tag2, tag3',NULL,NULL,46,NULL),(2,'/test-url2','post2 title',NULL,'20130201000000','20130115000000',NULL,NULL,NULL,NULL,NULL,21,NULL),(3,'/test-url3','post3 title',NULL,'20130201000000','20130220000000',NULL,NULL,NULL,NULL,NULL,18,NULL);
 /*!40000 ALTER TABLE `posts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -108,4 +110,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-02-22 12:35:52
+-- Dump completed on 2013-02-25  8:59:59
