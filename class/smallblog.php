@@ -133,9 +133,10 @@ class smallblog {
 	 * @param $date_until
 	 * @param $date_from
 	 * @param $count
+	 * @param $popular
 	 * @return array|bool posts meta-data or false
 	 */
-	public function getPosts($offset, $posts_per_page, $tag, $tag_delim, $ctg_id, $date_until, $date_from = '', $count = false) {
+	public function getPosts($offset, $posts_per_page, $tag, $tag_delim, $ctg_id, $date_until, $date_from = '', $count = false, $popular = false) {
 		$posts = false;
 		$conn = $this->conn;
 
@@ -184,8 +185,12 @@ class smallblog {
 
 			}
 
-			if(!$count) {
-				$sql .= ' ORDER BY date_published DESC';
+			if($popular) {
+				$sql .= ' ORDER BY impressions DESC';
+			} else {
+				if(!$count) {
+					$sql .= ' ORDER BY date_published DESC';
+				}
 			}
 
 			if($posts_per_page > 0) {
