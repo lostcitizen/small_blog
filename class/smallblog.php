@@ -413,6 +413,102 @@ class smallblog {
 
 
 	/**
+	 * Get next or previous post
+	 *
+	 * @param $date
+	 * @param string $pos
+	 * @return array|bool
+	 */
+	public function getNearPost($date, $pos = 'next') {
+		$post = false;
+		$conn = $this->conn;
+
+		$rdbms = $this->db_settings['rdbms'];
+		$use_prepared_statements = $this->db_settings['use_prepared_statements'];
+
+		if($rdbms == "ADODB") {
+			if($use_prepared_statements) {
+
+				if($pos == 'previous') {
+					$sql = 'SELECT url, post_title FROM posts WHERE date_published IS NOT NULL AND date_published < ?' .
+						' ORDER BY date_published DESC LIMIT 0,1';
+				}
+				if($pos == 'next') {
+					$sql = 'SELECT url, post_title FROM posts WHERE date_published IS NOT NULL AND date_published > ?' .
+						' ORDER BY date_published ASC LIMIT 0,1';
+				}
+				$a_bind_params = array($date);
+
+				$stmt = $conn->Execute($sql, $a_bind_params);
+				if($stmt === false) {
+					$this->last_error = 'Wrong SQL: ' . $sql . ' Error: ' . $conn->ErrorMsg();
+				} else {
+					$post = $stmt->GetRows();
+				}
+			} else {
+
+				if($pos == 'previous') {
+					$sql = 'SELECT url, post_title FROM posts WHERE date_published IS NOT NULL AND date_published < ' .	$conn->qstr($date) .
+						' ORDER BY date_published DESC LIMIT 0,1';
+				}
+				if($pos == 'next') {
+					$sql = 'SELECT url, post_title FROM posts WHERE date_published IS NOT NULL AND date_published > ' .	$conn->qstr($date) .
+						' ORDER BY date_published ASC LIMIT 0,1';
+				}
+
+				$rs = $conn->Execute($sql);
+				if($rs === false) {
+					$this->last_error = 'Wrong SQL: ' . $sql . ' Error: ' . $conn->ErrorMsg();
+				} else {
+					$post = $rs->GetRows();
+				}
+			}
+		} else if($rdbms == "POSTGRES") {
+			if($use_prepared_statements) {
+
+				if($pos == 'previous') {
+					$sql = 'SELECT url, post_title FROM posts WHERE date_published IS NOT NULL AND date_published < $1' .
+						' ORDER BY date_published DESC LIMIT 0,1';
+				}
+				if($pos == 'next') {
+					$sql = 'SELECT url, post_title FROM posts WHERE date_published IS NOT NULL AND date_published > $1' .
+						' ORDER BY date_published ASC LIMIT 0,1';
+				}
+				$a_bind_params = array($date);
+
+				$rs = pg_query_params($conn, $sql, $a_bind_params);
+				if($rs === false) {
+					$this->last_error = 'Wrong SQL: ' . $sql . ' Error: ' . pg_last_error();
+				} else {
+					$post = pg_fetch_all($rs);
+				}
+			} else {
+
+				if($pos == 'previous') {
+					$sql = 'SELECT url, post_title FROM posts WHERE date_published IS NOT NULL AND date_published < ' .	pg_escape_literal($conn, $date) .
+						' ORDER BY date_published DESC LIMIT 0,1';
+				}
+				if($pos == 'next') {
+					$sql = 'SELECT url, post_title FROM posts WHERE date_published IS NOT NULL AND date_published > ' .	pg_escape_literal($conn, $date) .
+						' ORDER BY date_published ASC LIMIT 0,1';
+				}
+
+				$rs = pg_query($conn, $sql);
+				if($rs === false) {
+					$this->last_error = 'Wrong SQL: ' . $sql . ' Error: ' . pg_last_error();
+				} else {
+					$post = pg_fetch_all($rs);
+				}
+			}
+		} else {
+
+		}
+
+		return $post;
+	}
+
+
+	/**
 	 * Disconnect database
 	 *
 	 * @param $conn
