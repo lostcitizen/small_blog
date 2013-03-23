@@ -12,6 +12,9 @@ Copyright Christos Pontikis [http://pontikis.net][copyright]
 License [MIT][mit]
 [mit]: https://raw.github.com/pontikis/small_blog/master/MIT_LICENSE
 
+Release 0.8.0 (23 Mar 2013)
+---------------------------
+* public function getNearPost (get previous or next post)
 
 Release 0.7.1 (23 Feb 2013)
 ---------------------------

@@ -39,9 +39,10 @@ Features:
 * $smallblog->getPosts($offset, $posts_per_page, $tag, $tag_delim, $ctg_id, $date_start, $date_end, $count): returns selected range posts meta-data (or posts count id count = true)
 * $smallblog->getPostByURL($url): returns post meta-data from URL
 * $smallblog->increasePostImpressions($post_id): increase post impressions
+* $smallblog->getNearPost($date, 'next'): get next (or previous) post
 
 Download
 -------
-Current release 0.7.1 Download [here][DOWNLOAD]
+Current release 0.8.0 Download [here][DOWNLOAD]
 [DOWNLOAD]: https://github.com/pontikis/small_blog/archive/master.zip
 
