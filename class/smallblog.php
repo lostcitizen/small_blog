@@ -259,9 +259,14 @@ class smallblog {
 				}
 			}
 
-			if(!$count) {
-				$sql .= ' ORDER BY date_published DESC';
+			if($popular) {
+				$sql .= ' ORDER BY impressions DESC';
+			} else {
+				if(!$count) {
+					$sql .= ' ORDER BY date_published DESC';
+				}
 			}
+
 			if($posts_per_page > 0) {
 				$sql .= ' LIMIT ' . $posts_per_page . ' OFFSET ' . $offset;
 			}
