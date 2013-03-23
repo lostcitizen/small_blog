@@ -36,7 +36,7 @@ Conventions:
 Features:
 --------
 * Nice URLs
-* $smallblog->getPosts($offset, $posts_per_page, $tag, $tag_delim, $ctg_id, $date_start, $date_end, $count): returns selected range posts meta-data (or posts count id count = true)
+* $smallblog->getPosts($offset, $posts_per_page, $tag, $tag_delim, $ctg_id, $date_start, $date_end, $count, $popular): returns selected range posts meta-data (or posts count if count = true, or most popular posts meta-data if popular = true)
 * $smallblog->getPostByURL($url): returns post meta-data from URL
 * $smallblog->increasePostImpressions($post_id): increase post impressions
 * $smallblog->getNearPost($date, 'next'): get next (or previous) post

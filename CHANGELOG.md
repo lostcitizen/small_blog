@@ -12,13 +12,17 @@ Copyright Christos Pontikis [http://pontikis.net][copyright]
 License [MIT][mit]
 [mit]: https://raw.github.com/pontikis/small_blog/master/MIT_LICENSE
 
-Release 0.8.0 (23 Mar 2013)
+
+Release 0.8.0 (24 Mar 2013)
 ---------------------------
 * public function getNearPost (get previous or next post)
+* add parameter $popular to getPosts() to return most populat posts
+
 
 Release 0.7.1 (23 Feb 2013)
 ---------------------------
 * bug fix: where sql typo using tag
+
 
 Release 0.7.0 (22 Feb 2013)
 ---------------------------
