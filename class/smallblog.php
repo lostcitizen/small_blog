@@ -97,7 +97,7 @@ class smallblog {
 
 			if($conn !== false) {
 				if($db_settings['query_after_connection']) {
-					$conn->execute($db_settings['query_after_connection']);
+					$conn->Execute($db_settings['query_after_connection']);
 				}
 			}
 
