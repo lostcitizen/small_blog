@@ -45,9 +45,10 @@ class smallblog {
 	 * \todo implement misc RDBMS
 	 *
 	 * @param Array $db_settings database settings
-	 * @return object|bool database connection or false
+	 * @return bool
 	 */
 	public function db_connect($db_settings) {
+		$result = false;
 		$db_type = $db_settings['rdbms'];
 
 		if(!in_array($db_type, array("ADODB", "POSTGRES"))) {
@@ -109,10 +110,14 @@ class smallblog {
 
 		if($conn === false) {
 			$this->last_error = 'Cannot connect to database';
+		} else {
+			$result = true;
 		}
 
 		$this->db_settings = $db_settings;
 		$this->conn = $conn;
+
+		return $result;
 
 	}
 
